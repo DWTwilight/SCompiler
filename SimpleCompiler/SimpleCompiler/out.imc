@@ -1,0 +1,71 @@
+global(#0) gval : int(0)
+global(#1) g2 : int(0)
+global(#2) g3 : int(3)
+global(#3) fval : float(0.000000)
+global(#4) f2 : float(0.500000)
+global(#5) f3 : float(3.000000)
+
+function test : int (int)
+local: 1 (int)
+		iload_l	0
+		ipush	5
+		cmpGT
+		jz	L000
+		ipush	1
+		store_r
+		return
+	L000:
+		ipush	0
+		store_r
+		return
+
+function printTest : void (int)
+local: 1 (int)
+	L001:
+		iload_l	0
+		ipush	0
+		cmpGT
+		jz	L002
+		iload_l	0
+		store_a
+		call	test
+		load_r
+		print
+		iload_l	0
+		iload_g	0
+		sub
+		istore_l	0
+		jmp	L001
+	L002:
+
+function getAvg : float (float, float)
+local: 3 (float, float, float)
+		fload_l	0
+		fload_l	1
+		add
+		ipush	2
+		div
+		fstore_l	2
+		fload_l	2
+		store_r
+		return
+		return
+
+function main : int ()
+local: 4 (int, int, int, float)
+		ipush	2
+		istore_l	0
+		ipush	3
+		istore_l	1
+		fpush	0.500000
+		fstore_l	3
+		ipush	1
+		istore_g	0
+		iload_g	0
+		print
+		ipush	10
+		store_a
+		call	printTest
+		ipush	0
+		store_r
+		return

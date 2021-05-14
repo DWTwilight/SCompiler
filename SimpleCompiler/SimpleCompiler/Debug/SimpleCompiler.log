@@ -1,0 +1,31 @@
+﻿  Common.cpp
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\Common.cpp(272,27): warning C4018: “<”: 有符号/无符号不匹配
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\Common.cpp(280,27): warning C4018: “<”: 有符号/无符号不匹配
+  Node.cpp
+  cal.tab.cpp
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\cal.tab.c(1211,5): warning C4065: switch 语句包含“default”但是未包含“case”标签
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\cal.y(156,16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\cal.y(162,17): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  lex.yy.cpp
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(49,1): warning C4005: “INT8_MIN”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(58): message : 参见“INT8_MIN”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(50,1): warning C4005: “INT16_MIN”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(61): message : 参见“INT16_MIN”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(51,1): warning C4005: “INT32_MIN”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(64): message : 参见“INT32_MIN”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(53,1): warning C4005: “INT8_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(67): message : 参见“INT8_MAX”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(54,1): warning C4005: “INT16_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(70): message : 参见“INT16_MAX”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(55,1): warning C4005: “INT32_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(73): message : 参见“INT32_MAX”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(57,1): warning C4005: “UINT8_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(76): message : 参见“UINT8_MAX”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(58,1): warning C4005: “UINT16_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(79): message : 参见“UINT16_MAX”的前一个定义
+E:\VS2019\VC\Tools\MSVC\14.28.29333\include\stdint.h(59,1): warning C4005: “UINT32_MAX”: 宏重定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(82): message : 参见“UINT32_MAX”的前一个定义
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\cal.l(28,23): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\Stefan Chao\source\repos\SimpleCompiler\SimpleCompiler\lex.yy.c(1457,33): warning C4996: 'isatty': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _isatty. See online help for details.
+  正在生成代码...
+  SimpleCompiler.vcxproj -> C:\Users\Stefan Chao\source\repos\SimpleCompiler\Debug\SimpleCompiler.exe
