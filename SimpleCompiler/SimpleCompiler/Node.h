@@ -6,6 +6,7 @@ using namespace std;
 enum class NodeType;
 enum class OpType;
 enum class VType;
+class Function;
 
 extern FILE* yyout;
 
@@ -78,6 +79,16 @@ private:
 	int lable2;
 };
 
+class ForNode : public OpNode {
+public:
+	ForNode(int lbl);
+	int Translate();
+
+private:
+	int lable1;
+	int lable2;
+};
+
 class IfNode : public OpNode {
 public:
 	IfNode(int lbl);
@@ -112,12 +123,29 @@ class ArgNode : public OpNode {
 public:
 	ArgNode(Node* expr);
 	int Translate();
+	void SetType(VType type);
+
+private:
+	VType type;
+};
+
+class ArgListNode : public OpNode {
+public:
+	ArgListNode(Node* arg);
+	int Translate();
+	void SetFunc(Function* func);
+
+private:
+	Function* func;
 };
 
 class ReturnNode : public OpNode {
 public:
-	ReturnNode(Node* expr);
+	ReturnNode(Node* expr, VType rt, string fName);
 	int Translate();
+private:
+	VType returnType;
+	string funcName;
 };
 
 class NegNode : public OpNode {
@@ -194,10 +222,10 @@ public:
 
 class FuncNode : public OpNode {
 public:
-	FuncNode(Node* argList, string& funcName, bool hasRV);
+	FuncNode(Node* argList, string& funcName, VType rType);
 	int Translate();
 
 private:
 	string funcName;
-	bool hasRV;
+	VType returnType;
 };

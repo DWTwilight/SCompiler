@@ -23,7 +23,7 @@ Node* nPtr; /* node pointer */
 %token <fValue> FLOATNUM
 %token <iValue> INTEGER 
 %token <sIndex> IDENTIFIER 
-%token WHILE IF PRINT INT VOID RETURN FLOAT
+%token WHILE IF PRINT INT VOID RETURN FLOAT FOR
 %nonassoc IFX 
 %nonassoc ELSE 
 %left GE LE EQ NE '>' '<' 
@@ -46,7 +46,7 @@ function
 ;
 
 function: 
-type IDENTIFIER {cManager->AddFunction($2, $1)} '(' param_list ')' '{' stmt_list '}' {cManager->CompleteFunction(); $8->Translate(); if($1 == 1){fprintf(yyout, "\t\treturn\n");} delete $8 }
+type IDENTIFIER {cManager->AddFunction($2, $1)} '(' param_list ')' '{' stmt_list '}' {cManager->CompleteFunction(); $8->Translate(); if($1 == 2){fprintf(yyout, "\t\treturn\n");} delete $8 }
 ; 
 
 param_list:
@@ -97,12 +97,13 @@ stmt:
 | PRINT expr ';'  { $$ = new PrintNode($2) }
 | IDENTIFIER '=' expr ';' { $$ = new AssignNode(cManager->GetVarNode($1), $3) }
 | WHILE '(' expr ')' stmt { $$ = cManager->GetWhile($3, $5) }
+| FOR '(' stmt expr ';' stmt ')' stmt { $$ = cManager->GetFor($3, $4, $6, $8) }
 | IF '(' expr ')' stmt %prec IFX { $$ = cManager->GetIf($3, $5) }
 | IF '(' expr ')' stmt ELSE stmt { $$ = cManager->GetIf($3, $5, $7) }
 | '{' stmt_list '}' { $$ = $2 }
 | decl ';' { $$ = $1 }
-| RETURN ';' { $$ = new ReturnNode(NULL) }
-| RETURN expr ';' { $$ = new ReturnNode($2) }
+| RETURN ';' { $$ = cManager->GetReturnNode(NULL) }
+| RETURN expr ';' { $$ = cManager->GetReturnNode($2) }
 | error ';' { $$ = cManager->GetConnNode(0) }
 | error '}' { $$ = cManager->GetConnNode(0) }
 ;
@@ -113,9 +114,9 @@ stmt_list stmt { $$ = cManager->GetConnNode(2, $1, $2) }
 ; 
 
 arg_list:
-arg_list ',' arg { $$ = cManager->GetConnNode(2, $1, $3) }
-| arg { $$ = $1 }
-| { $$ = cManager->GetConnNode(0) }
+arg_list ',' arg { cManager->GetArgListNode($1, $3) }
+| arg { $$ = new ArgListNode($1) }
+| { $$ = new ArgListNode(NULL) }
 ;
 
 arg:

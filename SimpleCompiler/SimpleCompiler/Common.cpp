@@ -189,6 +189,18 @@ WhileNode* CompileManager::GetWhile(Node* expr, Node* stmt)
     return res;
 }
 
+ForNode* CompileManager::GetFor(Node* stmt1, Node* expr, Node* stmt2, Node* stmt3)
+{
+    auto res = new ForNode(this->lbl);
+    this->lbl += 2;
+    res->AddOpreand(stmt1);
+    res->AddOpreand(expr);
+    res->AddOpreand(stmt2);
+    res->AddOpreand(stmt3);
+
+    return res;
+}
+
 IfNode* CompileManager::GetIf(Node* expr, Node* stmt1, Node* stmt2)
 {
     auto res = new IfNode(this->lbl);
@@ -215,11 +227,25 @@ FuncNode* CompileManager::GetFunc(Node* args, int nameIndex)
     if (this->functions.find(this->identifiers[nameIndex]) == this->functions.end()) {
         string error = "unidentified function : " + this->identifiers[nameIndex];
         yyerror((char*)(error.c_str()));
-        return new FuncNode(args, string("error_func"), false);
+        return new FuncNode(args, string("error_func"), VType::VOID);
     }
-    auto& func = this->functions[this->identifiers[nameIndex]];
+    auto func = &(this->functions[this->identifiers[nameIndex]]);
 
-    return new FuncNode(args, func.GetName(), func.GetReturnType() != VType::VOID);
+    ((ArgListNode*)args)->SetFunc(func);
+
+    return new FuncNode(args, func->GetName(), func->GetReturnType());
+}
+
+ReturnNode* CompileManager::GetReturnNode(Node* expr)
+{
+    auto& func = this->functions[this->currentFunction];
+    return new ReturnNode(expr, func.GetReturnType(), func.GetName());
+}
+
+Node* CompileManager::GetArgListNode(Node* argList, Node* arg)
+{
+    ((ArgListNode*)argList)->AddOpreand(arg);
+    return argList;
 }
 
 bool CompileManager::GetFlag()
@@ -293,4 +319,9 @@ string& Function::GetName()
 VType Function::GetReturnType()
 {
     return this->returnType;
+}
+
+vector<VType>& Function::GetParamTypes()
+{
+    return this->params;
 }

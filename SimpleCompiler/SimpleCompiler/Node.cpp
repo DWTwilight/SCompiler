@@ -207,25 +207,54 @@ ArgNode::ArgNode(Node* expr) : OpNode(OpType::OP_ARG)
 int ArgNode::Translate()
 {
 	this->operands[0]->Translate();
-	fprintf(yyout, "\t\tstore_a\n");
+	if (this->type == VType::FLOAT) {
+		fprintf(yyout, "\t\tfstore_a\n");
+	}
+	else {
+		fprintf(yyout, "\t\tistore_a\n");
+	}
+	
 	return 0;
 }
 
-ReturnNode::ReturnNode(Node* expr) : OpNode(OpType::OP_RETURN)
+void ArgNode::SetType(VType type)
+{
+	this->type = type;
+}
+
+ReturnNode::ReturnNode(Node* expr, VType rt, string fName) : OpNode(OpType::OP_RETURN)
 {
 	this->AddOpreand(expr);
+	this->returnType = rt;
+	this->funcName = fName;
 }
 
 int ReturnNode::Translate()
 {
-	if (!this->operands.empty())
-	{
-		this->operands[0]->Translate();
-		fprintf(yyout, "\t\tstore_r\n");
-		fprintf(yyout, "\t\treturn\n");
+	if (this->returnType == VType::VOID) {
+		if (!this->operands.empty()) {
+			string error = "fucntion : " + this->funcName + " doesn't have a return value";
+			yyerror((char*)(error.c_str()));
+		}
+		else {
+			fprintf(yyout, "\t\treturn\n");
+		}
 	}
 	else {
-		fprintf(yyout, "\t\treturn\n");
+		if (this->operands.empty()) {
+			string error = "fucntion : " + this->funcName + " must have a return value";
+			yyerror((char*)(error.c_str()));
+		}
+		else {
+			this->operands[0]->Translate();
+			if (this->returnType == VType::FLOAT) {
+				fprintf(yyout, "\t\tfstore_r\n");
+			}
+			else {
+				fprintf(yyout, "\t\tistore_r\n");
+			}
+			fprintf(yyout, "\t\treturn\n");
+		}
 	}
 	return 0;
 }
@@ -396,19 +425,24 @@ int NENode::Translate()
 	return 0;
 }
 
-FuncNode::FuncNode(Node* argList, string& funcName, bool hasRV) : OpNode(OpType::OP_FUNC)
+FuncNode::FuncNode(Node* argList, string& funcName, VType rType) : OpNode(OpType::OP_FUNC)
 {
 	this->AddOpreand(argList);
 	this->funcName = funcName;
-	this->hasRV = hasRV;
+	this->returnType = rType;
 }
 
 int FuncNode::Translate()
 {
 	this->operands[0]->Translate();
 	fprintf(yyout, "\t\tcall\t%s\n", this->funcName.c_str());
-	if (this->hasRV) {
-		fprintf(yyout, "\t\tload_r\n");
+	if (this->returnType != VType::VOID) {
+		if (this->returnType == VType::FLOAT) {
+			fprintf(yyout, "\t\tfload_r\n");
+		}
+		else {
+			fprintf(yyout, "\t\tiload_r\n");
+		}
 	}
 	return 0;
 }
@@ -427,4 +461,53 @@ int FloatNode::Translate()
 float FloatNode::GetValue()
 {
 	return this->value;
+}
+
+ArgListNode::ArgListNode(Node* arg) : OpNode(OpType::OP_ARGLIST)
+{
+	this->AddOpreand(arg);
+}
+
+int ArgListNode::Translate()
+{
+	for (auto n : this->operands) {
+		n->Translate();
+	}
+	return 0;
+}
+
+void ArgListNode::SetFunc(Function* func)
+{
+	this->func = func;
+	auto argTypes = this->func->GetParamTypes();
+	if (argTypes.size() != this->operands.size()) {
+		string error = "incorrect param count for function : " + this->func->GetName();
+		yyerror((char*)(error.c_str()));
+	}
+	else {
+		for (int i = 0; i < this->operands.size(); i++) {
+			auto arg = (ArgNode*)(this->operands[i]);
+			arg->SetType(argTypes[i]);
+		}
+	}
+}
+
+ForNode::ForNode(int lbl) : OpNode(OpType::OP_FOR)
+{
+	this->lable1 = lbl;
+	this->lable2 = lbl + 1;
+}
+
+int ForNode::Translate()
+{
+	this->operands[0]->Translate();
+	fprintf(yyout, "\tL%03d:\n", this->lable1);
+	this->operands[1]->Translate();
+	fprintf(yyout, "\t\tjz\tL%03d\n", this->lable2);
+	this->operands[3]->Translate();
+	this->operands[2]->Translate();
+	fprintf(yyout, "\t\tjmp\tL%03d\n", this->lable1);
+	fprintf(yyout, "\tL%03d:\n", this->lable2);
+
+	return 0;
 }

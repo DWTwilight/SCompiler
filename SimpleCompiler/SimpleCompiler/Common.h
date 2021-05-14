@@ -18,6 +18,7 @@ enum class NodeType
 
 enum class OpType {
 	OP_WHILE,
+	OP_FOR,
 	OP_IF,
 	OP_PRINT,
 	OP_ASSIGN,
@@ -35,6 +36,7 @@ enum class OpType {
 	OP_EQ,
 	OP_CONN,
 	OP_ARG,
+	OP_ARGLIST,
 	OP_RETURN,
 	OP_FUNC
 };
@@ -61,6 +63,7 @@ public:
 	void PrintDescription();
 	string& GetName();
 	VType GetReturnType();
+	vector<VType>& GetParamTypes();
 
 	void Debug() {
 		cout << this->name << " : " << (int)this->returnType << endl;
@@ -95,9 +98,12 @@ public:
 	VarNode* GetVarNode(int nameIndex);
 	ConnNode* GetConnNode(int count, ...);
 	WhileNode* GetWhile(Node* expr, Node* stmt);
+	ForNode* GetFor(Node* stmt1, Node* expr, Node* stmt2, Node* stmt3);
 	IfNode* GetIf(Node* expr, Node* stmt1, Node* stmt2);
 	IfNode* GetIf(Node* expr, Node* stmt);
 	FuncNode* GetFunc(Node* args, int nameIndex);
+	ReturnNode* GetReturnNode(Node* expr);
+	Node* GetArgListNode(Node* argList, Node* arg);
 	bool GetFlag();
 
 	void Debug() {

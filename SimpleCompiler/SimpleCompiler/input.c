@@ -28,5 +28,9 @@ int main(){
     print(gval);
     printTest(10);
 
+    for(a = 1; a < 5; a = a + 1;){
+        print(a);
+    }
+
     return 0;
 }

@@ -12,11 +12,11 @@ local: 1 (int)
 		cmpGT
 		jz	L000
 		ipush	1
-		store_r
+		istore_r
 		return
 	L000:
 		ipush	0
-		store_r
+		istore_r
 		return
 
 function printTest : void (int)
@@ -27,9 +27,9 @@ local: 1 (int)
 		cmpGT
 		jz	L002
 		iload_l	0
-		store_a
+		istore_a
 		call	test
-		load_r
+		iload_r
 		print
 		iload_l	0
 		iload_g	0
@@ -37,6 +37,7 @@ local: 1 (int)
 		istore_l	0
 		jmp	L001
 	L002:
+		return
 
 function getAvg : float (float, float)
 local: 3 (float, float, float)
@@ -47,8 +48,7 @@ local: 3 (float, float, float)
 		div
 		fstore_l	2
 		fload_l	2
-		store_r
-		return
+		fstore_r
 		return
 
 function main : int ()
@@ -64,8 +64,23 @@ local: 4 (int, int, int, float)
 		iload_g	0
 		print
 		ipush	10
-		store_a
+		istore_a
 		call	printTest
+		ipush	1
+		istore_l	0
+	L003:
+		iload_l	0
+		ipush	5
+		cmpLT
+		jz	L004
+		iload_l	0
+		print
+		iload_l	0
+		ipush	1
+		add
+		istore_l	0
+		jmp	L003
+	L004:
 		ipush	0
-		store_r
+		istore_r
 		return

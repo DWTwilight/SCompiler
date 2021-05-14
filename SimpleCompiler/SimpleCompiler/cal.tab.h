@@ -56,13 +56,14 @@ enum yytokentype {
     VOID = 265,
     RETURN = 266,
     FLOAT = 267,
-    IFX = 268,
-    ELSE = 269,
-    NE = 270,
-    EQ = 271,
-    LE = 272,
-    GE = 273,
-    UMINUS = 274
+    FOR = 268,
+    IFX = 269,
+    ELSE = 270,
+    NE = 271,
+    EQ = 272,
+    LE = 273,
+    GE = 274,
+    UMINUS = 275
 };
 #endif
 
@@ -81,7 +82,7 @@ typedef union YYSTYPE
 
 
     /* Line 2058 of yacc.c  */
-#line 85 "cal.tab.h"
+#line 86 "cal.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
